@@ -1,4 +1,34 @@
+import axios from 'axios'
 const Card = (article) => {
+  const cardDiv = document.createElement('div')
+  const headline = document.createElement('div')
+  const author = document.createElement('div')
+  const image = document.createElement('div')
+  const authorPhoto = document.createElement('img')
+  const authorName = document.createElement('span')
+
+  cardDiv.className = 'card'
+  headline.className = 'headline'
+  author.className = 'author'
+  image.className = 'img-container'
+
+  headline.textContent = article.headline
+  authorName.textContent = article.authorName
+  authorPhoto.src = `${article.authorPhoto}`
+
+  cardDiv.appendChild(headline)
+  cardDiv.appendChild(author)
+  author.appendChild(image)
+  image.appendChild(authorPhoto)
+  author.appendChild(authorName)
+
+  cardDiv.addEventListener('click', () => {
+    console.log(headline);
+  });
+
+  return cardDiv
+
+
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -17,9 +47,51 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
-}
+};
 
 const cardAppender = (selector) => {
+  // axios.get('http://localhost:5000/api/articles')
+  // .then(response => {
+  //   const newCard = document.querySelector(selector);
+  //   response.data.articles.javascript.forEach(e => {
+  //     newCard.appendChild(Card(e));
+  //   })
+  //   response.data.articles.bootstrap.forEach(e => {
+  //     newCard.appendChild(Card(e));
+  //   })
+  //   response.data.articles.technology.forEach(e => {
+  //     newCard.appendChild(Card(e));
+  //   })
+  //   response.data.articles.jquery.forEach(e => {
+  //     newCard.appendChild(Card(e));
+  //   })
+  //   response.data.articles.node.forEach(e => {
+  //     newCard.appendChild(Card(e));
+  //   })
+  // })
+  // .catch(function (error) {
+  //   console.log(error);
+  // })
+
+
+
+
+
+  const array = ['javascript', 'bootstrap', 'technology', 'jquery', 'node']
+        axios .get (`http://localhost:5000/api/articles`)
+              .then((res) => {
+                console.log(res.data.articles.javascript)
+            
+                array.forEach(topic => {
+                  res.data.articles[topic].forEach(el => {
+                    const newDiv = Card(el);
+                    document.querySelector(selector).appendChild(newDiv);
+                  });
+                });
+              })
+              .catch((err) => {
+                console.log(err)
+              })
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
